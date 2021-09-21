@@ -1,18 +1,32 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // import Product from "./Product";
 
 import React from "react";
 import ProductData from "./ProductData";
+import Product from "./Product";
 
-const ProductList = () => {
-  const[product,setProduct] =useState([]);
+function ProductList() {
+  const [product, setProduct] = useState([]);
 
-  
-    const fetchProducts = async ()=>{
-      const response = await fetch('https://e-site-53120-default-rtdb.firebaseio.com/products.json');
-      const responseData = await response.json();
-      console.log(responseData);
-  }
+  const fetchProducts = async () => {
+    const response = await fetch(
+      "https://e-site-53120-default-rtdb.firebaseio.com/products.json"
+    );
+    const responseData = await response.json();
+    // console.log(responseData);
+
+    let loadedProducts = [];
+
+    for (const key in responseData) {
+      loadedProducts.push({
+        id: key,
+        name: responseData[key].productName,
+        amount: responseData[key].productPrice,
+        description: responseData[key].productDescription,
+      });
+    }
+    setProduct(loadedProducts);
+  };
 
   async function onSubmitHandler(product) {
     const response = await fetch(
@@ -28,12 +42,17 @@ const ProductList = () => {
 
   return (
     <React.Fragment>
-    <section>
-      <ProductData onSubmit={onSubmitHandler} />
-    </section>
-    <button onClick={fetchProducts}>Fetch Products</button>
+      <section>
+        <ProductData onSubmit={onSubmitHandler} />
+      </section>
+      <section>
+        <button onClick={fetchProducts}>Fetch Products</button>
+      </section>
+      <section>
+        <Product product={product} />
+      </section>
     </React.Fragment>
   );
-};
+}
 
 export default ProductList;

@@ -1,15 +1,20 @@
-import classes from './Product.module.css'
-
-const Product = ({name,amount,description})=>{
-
-    const price = ` Rs ${amount} `
-    return(<div>
-        <li>
-           <div className = {classes.name}>{name}</div>
-           <div className = {classes.price}>{price}</div>
-           <p className = {classes.description}>{description}</p>
-        </li>
-    </div>)
+// import classes from './Product.module.css'
+import ProductDetails from "./ProductDetails";
+const Product = (props) => {
+  return (
+    <div>
+      <ul>
+        {props.product.map((prod) => (
+          <ProductDetails
+            key={prod.id}
+            name={prod.name}
+            amount={prod.amount}
+            description={prod.description}
+          />
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default Product;
