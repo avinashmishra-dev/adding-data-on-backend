@@ -46,7 +46,7 @@ function ProductList() {
         <ProductData onSubmit={onSubmitHandler} />
       </section>
       <section>
-        <button onClick={fetchProducts}>Fetch Products</button>
+        <button onClick={fetchProducts}>Fetch Latest Products</button>
       </section>
       <section>
         <Product product={product} />
