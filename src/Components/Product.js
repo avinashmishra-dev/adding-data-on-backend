@@ -1,10 +1,10 @@
 // import classes from './Product.module.css'
 import ProductDetails from "./ProductDetails";
-const Product = (props) => {
+const Product = ({product}) => {
   return (
     <div>
       <ul>
-        {props.product.map((prod) => (
+        {product.map((prod) => (
           <ProductDetails
             key={prod.id}
             name={prod.name}
