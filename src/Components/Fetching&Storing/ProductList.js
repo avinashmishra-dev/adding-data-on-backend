@@ -3,11 +3,17 @@ import { useCallback, useEffect, useState } from "react";
 
 import React from "react";
 import ProductData from "./ProductData";
-import Product from "./Product";
+import Products from "./Products";
 import Button from "../Button/Button";
 
 function ProductList() {
-  const [product, setProduct] = useState([]);
+  const [products, setProducts] = useState([]);
+  const columns = [
+    "Product Name",
+    "Product Price",
+    "Product Description",
+    "Action",
+  ];
 
   const fetchProducts = useCallback(async () => {
     const response = await fetch(
@@ -26,19 +32,19 @@ function ProductList() {
         description: responseData[key].productDescription,
       });
     }
-    setProduct(loadedProducts);
+    setProducts(loadedProducts);
   }, []);
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
-  async function onSubmitHandler(product) {
+  async function onSubmitHandler(products) {
     const response = await fetch(
       "https://e-site-53120-default-rtdb.firebaseio.com/products.json",
       {
         method: "POST",
-        body: JSON.stringify(product),
+        body: JSON.stringify(products),
       }
     );
     // const data = await response.json();
@@ -54,7 +60,7 @@ function ProductList() {
         <Button onFetch={fetchProducts}>Fetch Latest Products</Button>
       </section>
       <section>
-        <Product product={product} />
+        <Products dataSet={{ columns, rows: products }} />
       </section>
     </React.Fragment>
   );
