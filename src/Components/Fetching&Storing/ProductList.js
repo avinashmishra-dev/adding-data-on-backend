@@ -5,7 +5,6 @@ import React from "react";
 import ProductData from "./ProductData";
 import Products from "./Products";
 import Button from "../Button/Button";
-
 function ProductList() {
   const [products, setProducts] = useState([]);
   const columns = [

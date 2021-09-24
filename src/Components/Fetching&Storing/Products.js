@@ -1,4 +1,3 @@
-// import classes from './Product.module.css'
 import * as ReactBootStrap from "react-bootstrap";
 
 const Product = (props) => {
