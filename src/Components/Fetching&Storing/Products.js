@@ -1,3 +1,5 @@
+// import classes from './Product.module.css'
+import Button from '../Button/Button';
 import * as ReactBootStrap from "react-bootstrap";
 
 const Product = (props) => {
@@ -7,31 +9,34 @@ const Product = (props) => {
       <td>{props.amount}</td>
       <td>{props.description}</td>
       <td>
-        <button>edit</button>/<button>delete</button>
+        <Button>edit</Button>/
+        <Button onFetch={props.onDeleteHandler.bind(this, props.id)}>
+          delete
+        </Button>
       </td>
     </>
   );
 };
 
-const Products = ({ dataSet }) => {
-  
+const Products = ({ dataSet, onDeleteHandler }) => {
   return (
     <ReactBootStrap.Table striped bordered hover>
       <thead>
         <tr>
-          {dataSet.columns.map((column) => (
-            <th>{column}</th>
+          {dataSet.columns.map((column, id) => (
+            <th key={id}>{column}</th>
           ))}
         </tr>
       </thead>
       <tbody>
         {dataSet.rows.map((prod) => (
-          <tr>
+          <tr key={prod.id}>
             <Product
-              key={prod.id}
+              id={prod.id}
               name={prod.name}
               amount={prod.amount}
               description={prod.description}
+              onDeleteHandler = {onDeleteHandler}
             />
           </tr>
         ))}
