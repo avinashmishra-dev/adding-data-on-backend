@@ -1,5 +1,6 @@
 import "./App.css";
-import ProductList from './Components/Fetching&Storing/ProductList'
+import ProductList from './Components/Fetching&Storing/ProductList';
+import './firebase';
 
 function App() {
   return (

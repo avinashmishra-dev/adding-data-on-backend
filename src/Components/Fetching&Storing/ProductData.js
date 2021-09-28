@@ -1,63 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState ,useRef} from "react";
 import Button from "../Button/Button";
 
-const ProductData = ({ onSubmit }) => {
-  const [productName,setProductName] =useState('');
-  const[productPrice,setProductPrice] =useState('');
-  const [productDescription,setProductDescription] =useState('');
-
-  const productNameHandler = (event)=>{
-    setProductName(event.target.value);
-  }
-
-  const productPriceHandler = (event)=>{
-    setProductPrice(event.target.value);
-  }
-
-  const productDescriptionHandler = (event)=>{
-    setProductDescription(event.target.value);
-  }
-
-  const onSubmitHandler = (event) => {
-    event.preventDefault();
-    //   console.log(productName.current.value);
-    //   console.log(productPrice.current.value);
-    //   console.log(productDescription.current.value);
-    
-
-    const product = {
-      productName: productName,
-      productPrice: productPrice,
-      productDescription: productDescription,
-    };
-
-    if (
-      product.productName === "" ||
-      product.productPrice === "" ||
-      product.productDescription === ""
-    ) {
-      return;
-    }
-
-    onSubmit(product);
-    setProductName('');
-    setProductPrice('');
-    setProductDescription('');
-  };
+const ProductData = ({ onSubmit, currentProduct }) => {
+  // const [product, setProduct] = useState({});
+  const name = useRef();
+  const price = useRef();
+  const description = useRef();
+  
+  // useEffect(() => {
+  //   if (currentProduct) {
+  //     setProduct(currentProduct);
+  //   }
+  // }, [currentProduct]);
 
   return (
-    <form onSubmit={onSubmitHandler}>
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSubmit({
+          name: name.current.value.trim() || "",
+          price: price.current.value.trim() || "",
+          description: description.current.value.trim() || "",
+        });
+      }}
+    >
       <div>
         <label htmlFor="name">Product name</label>
-        <input id="name" type="text" value={productName} onChange={productNameHandler}/>
+        <input id="name" type="text" value={currentProduct?.name} ref={name}/>
       </div>
       <div>
         <label htmlFor="price">Product price</label>
-        <input id="price" type="text" value={productPrice} onChange={productPriceHandler}/>
+        <input id="price" type="text" value={currentProduct?.price} ref={price}/>
       </div>
       <div>
         <label htmlFor="description">Product description</label>
-        <input id="description" type="text" value={productDescription} onChange={productDescriptionHandler}/>
+        <input
+          id="description"
+          type="text"
+          value={currentProduct?.description}
+          ref={description}
+        />
       </div>
       <Button>Submit</Button>
     </form>
