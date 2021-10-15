@@ -115,7 +115,7 @@ function ProductList() {
         />
       </section>
       <section className={`${classes.card}`}>
-        <p className={`${classes.title}`}>Products</p>
+        <p className={`${classes.title} m-0`}>Products</p>
         <Products
           columns={columns}
           rows={products}
