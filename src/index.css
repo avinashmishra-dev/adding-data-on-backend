@@ -1,11 +1,50 @@
 body {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   height: 100vh;
   width: 100%;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.hand {
+  cursor: pointer;
+}
+
+.custom-btn {
+  min-width: 5rem;
+  background: white;
+  border: 1px solid grey;
+  outline: none;
+  padding: 0.25rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.custom-btn:hover {
+  background: black;
+  color: white;
+}
+
+.custom-btn:focus {
+  outline: none;
+}
+
+.custom-btn:disabled {
+  pointer-events: none;
+  color: grey;
+  border: 1px solid grey;
+}
+
+.custom-input {
+  border-radius: 4px;
+  padding: 0.25rem 1rem;
+  border: 1px solid grey;
+}
+
+.custom-input:focus {
+  border: 1px solid black;
 }

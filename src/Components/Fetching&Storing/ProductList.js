@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import React from "react";
 import ProductData from "./ProductData";
 import Products from "./Products";
+import classes from "./ProductList.module.css";
 import firebase from "firebase";
 
 function ProductList() {
@@ -105,14 +106,16 @@ function ProductList() {
 
   return (
     <React.Fragment>
-      <section>
+      <section className={`${classes.card}`}>
+        <p className={`${classes.title}`}>Add Product</p>
         <ProductData
           onSubmit={addProductHandler}
           currentProduct={currentProduct}
           updateProductField={updateProductField}
         />
       </section>
-      <section>
+      <section className={`${classes.card}`}>
+        <p className={`${classes.title}`}>Products</p>
         <Products
           columns={columns}
           rows={products}

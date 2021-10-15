@@ -1,0 +1,18 @@
+.form {
+  background: red;
+  width: 80%;
+}
+.field {
+  margin-bottom: 1rem;
+  max-width: 30rem;
+}
+.field label {
+  font-weight: 500;
+  width: 10rem;
+  margin-bottom: 0.5rem;
+}
+.field .product-input {
+    min-width: 10rem;
+    max-width: 30rem;
+
+}
