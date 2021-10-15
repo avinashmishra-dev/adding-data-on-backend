@@ -3,14 +3,11 @@ import { useCallback, useEffect, useState } from "react";
 import React from "react";
 import ProductData from "./ProductData";
 import Products from "./Products";
-import Button from "../Button/Button";
 import firebase from "firebase";
-// import ProductManager from "./ProductManager";
 
 function ProductList() {
   const [products, setProducts] = useState([]);
-  const [currentProduct, setCurrentProduct] = useState('');
-  
+  const [currentProduct, setCurrentProduct] = useState({});
 
   const columns = [
     "Product Name",
@@ -19,25 +16,27 @@ function ProductList() {
     "Action",
   ];
 
-  const productHandler = (product) => {
-    // console.log(product);
+  const addProductHandler = () => {
     if (
-      !product.name ||
-      !product.price ||
-      !product.description
+      !currentProduct.name ||
+      !currentProduct.price ||
+      !currentProduct.description
     ) {
       return;
     }
-    createProduct(product);
+    createProduct(currentProduct)
+      .then((res) => {
+        fetchProducts();
+        setCurrentProduct({});
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = useCallback(() => {
     let loadedProducts = [];
     const dbRef = firebase.database().ref("products");
-    // dbRef.on('value', (snapshot) => {
-    //   const data = snapshot.val();
-    //   console.log(data)
-    // });
     dbRef.get().then((snapshot) => {
       if (snapshot.exists()) {
         const responseData = snapshot.val();
@@ -51,7 +50,7 @@ function ProductList() {
         }
         setProducts(loadedProducts);
       } else {
-        console.log("No data available");
+        setProducts([]);
       }
     });
   }, []);
@@ -61,26 +60,32 @@ function ProductList() {
   }, [fetchProducts]);
 
   async function deleteHandler(id) {
+    const foundProductPos = products.findIndex((product) => product.id === id);
+    if (foundProductPos === -1) {
+      alert("Invalid product.");
+      return;
+    }
     let product = firebase.database().ref("products/" + id);
     product
       .remove()
       .then(function () {
-        console.log("Remove succeeded.");
+        const tempProducts = [...products];
+        tempProducts.splice(foundProductPos, 1);
+        setProducts([...tempProducts]);
       })
       .catch(function (error) {
-        console.log("Remove failed: " + error.message);
+        alert(
+          `Failed to delete ${products[foundProductPos].name} \n Error : ${error.message}. Please retry!`
+        );
       });
-      fetchProducts();
   }
 
   async function editHandler(id) {
-    // debugger;
     // let updateProduct = firebase.database().ref("products/" + id);
     const foundProduct = products.find((product) => product.id === id);
     console.log(foundProduct);
     if (foundProduct) {
-      setCurrentProduct({...foundProduct});
-      // setname(foundProduct.name);
+      setCurrentProduct({ ...foundProduct });
     } else {
       setCurrentProduct(null);
     }
@@ -90,20 +95,27 @@ function ProductList() {
     firebase.database().ref("products").push().set(product);
   }
 
+  const updateProductField = (field, value) => {
+    const updatedProduct = {
+      ...currentProduct,
+      [field]: value,
+    };
+    setCurrentProduct(updatedProduct);
+  };
+
   return (
     <React.Fragment>
       <section>
         <ProductData
-          onSubmit={productHandler}
+          onSubmit={addProductHandler}
           currentProduct={currentProduct}
+          updateProductField={updateProductField}
         />
       </section>
       <section>
-        <Button onFetch={fetchProducts}>Fetch Latest Products</Button>
-      </section>
-      <section>
         <Products
-          dataSet={{ columns, rows: products }}
+          columns={columns}
+          rows={products}
           onDeleteHandler={deleteHandler}
           editHandler={editHandler}
         />

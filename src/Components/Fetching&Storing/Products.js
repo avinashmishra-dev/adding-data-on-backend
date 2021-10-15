@@ -9,10 +9,10 @@ const Product = (props) => {
       <td>{props.price}</td>
       <td>{props.description}</td>
       <td>
-        <Button onFetch = {props.onUpdateHandler.bind(this,props.id)}>
+        {/* <Button onFetch={props.onUpdateHandler.bind(this, props.id)}>
           edit
         </Button>
-        /
+        / */}
         <Button onFetch={props.onDeleteHandler.bind(this, props.id)}>
           delete
         </Button>
@@ -21,18 +21,18 @@ const Product = (props) => {
   );
 };
 
-const Products = ({ dataSet, onDeleteHandler ,editHandler }) => {
+const Products = ({ rows, columns, onDeleteHandler, editHandler }) => {
   return (
     <ReactBootStrap.Table striped bordered hover>
       <thead>
         <tr>
-          {dataSet.columns.map((column,id) => (
+          {columns?.map((column, id) => (
             <th key={id}>{column}</th>
           ))}
         </tr>
       </thead>
       <tbody>
-        {dataSet.rows.map((prod) => {
+        {rows?.map((prod) => {
           return (
             <tr key={prod.id}>
               <Product
